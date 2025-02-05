@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Symfony\Component\Process\Pipes\WindowsPipes;
 
 class UserController extends Controller
 {
@@ -25,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('user.create');
     }
 
     /**
@@ -36,7 +37,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $datosValidados =  $request->validate(
+            [
+                'name' => 'required|min:3',
+                'email' => 'required',
+                'password' => 'required',
+                'rol'=> 'required'
+            ]
+            );
+
+         $newUser = new User();
+         $newUser->name = $datosValidados['name'];
+         $newUser->email = $datosValidados['email'];
+         $newUser -> passwosrd = $datosValidados['password'];
+         $newUser -> rol = $datosValidados['rol'];
+         $newUser-> save();
+
+
+        return view('user.index');
     }
 
     /**
@@ -58,7 +76,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+
+        return view('user.edit', compact('user'));
     }
 
     /**
@@ -70,7 +89,21 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+
+        $datosModificados = $request->validate(
+            [
+                'name' => 'required|min:3',
+                'email' => 'required',
+                'password' => 'required',
+                'rol'=> 'required'
+            ]
+            );
+            $user -> name = $datosModificados['name'];
+            $user->email = $datosModificados['email'];
+            $user-> password = $datosModificados['password'];
+            $user->rol = $datosModificados['rol'];
+
+            return redirect()->route('user.index');
     }
 
     /**
@@ -81,6 +114,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('user.index');
     }
 }
