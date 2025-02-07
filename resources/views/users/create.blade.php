@@ -4,7 +4,7 @@
 
 
 <h1>Nuevo Usuario</h1>
-<form action="{{route('users.store')}}" method="POST">
+<form class="w-50 text-center" action="{{route('users.store')}}" method="POST">
 
 @csrf
 @method('POST');
@@ -47,7 +47,7 @@
 </div>
 
 
-<input type="submit" name="enviar" value="Enviar" class="btn btn-dark btn-block">
+<input class="mt-2" type="submit" name="enviar" value="Enviar" class="btn btn-dark btn-block">
 </form>
 
 <a href="{{route('users.index')}}">Volver al inicio</a>

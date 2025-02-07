@@ -4,29 +4,31 @@
 @section('contenido')
 
 <h1>Listado de Usuarios</h1>
-<table>
+
+<th><a href="{{route('users.create')}}"><button class="btn btn-primary">Insertar Nuevo Usuario</button></a></th>
+<table class="text-center">
     <tr>
-        <th>nombre</th>
-        <th>email</th>
-        <th>rol</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Rol</th>
         <th>Acciones</th>
-        <th><a href="{{route('users.create')}}">Insertar Usuario</a></th>
+
 
     </tr>
 @forelse ($users as $user)
-    <tr>
-        <td>{{ $user->name }}</td>
-        <td>{{ $user->email }}</td>
-        <td>{{ $user->rol }}</td>
-        <td><a href="{{route('users.edit', $user)}}">Modificar Usuario</a></td>
-        <td><form action={{ route('users.destroy', $user) }} method="POST">
+    <tr class="pe-5" >
+        <td class="mx-5">{{ $user->name }}</td>
+        <td class="mx-5">{{ $user->email }}</td>
+        <td class="mx-5">{{ $user->rol }}</td>
+        <td class="mx-5"><a href="{{route('users.edit', $user)}}"><button class="btn btn-primary m-2">Modificar Usuario</button></a></td>
+        <td class="mx-5"><form action={{ route('users.destroy', $user) }} method="POST">
             @csrf
             @method('DELETE')
-            <button class="btn btn-danger">Eliminar</button>
+            <button class="btn btn-danger m-2">Eliminar</button>
 
         </form></td>
-    
-        <td><a href="{{route('users.show', $user)}}"><button class="btn btn-success">Ver Usuario</button></a></td>
+
+        <td class="m-5"><a href="{{route('users.show', $user)}}"><button class="btn btn-success m-2">Ver Usuario</button></a></td>
 
     </tr>
 @empty
