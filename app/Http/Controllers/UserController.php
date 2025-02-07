@@ -16,7 +16,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('user.index', compact('users'));
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user.create');
+        return view('users.create');
     }
 
     /**
@@ -40,7 +40,7 @@ class UserController extends Controller
       $datosValidados =  $request->validate(
             [
                 'name' => 'required|min:3',
-                'email' => 'required',
+                'email' => 'required|unique:users',
                 'password' => 'required',
                 'rol'=> 'required'
             ]
@@ -49,12 +49,12 @@ class UserController extends Controller
          $newUser = new User();
          $newUser->name = $datosValidados['name'];
          $newUser->email = $datosValidados['email'];
-         $newUser -> passwosrd = $datosValidados['password'];
+         $newUser -> password = $datosValidados['password'];
          $newUser -> rol = $datosValidados['rol'];
          $newUser-> save();
 
 
-        return view('user.index');
+        return redirect()-> route('users.index');
     }
 
     /**
@@ -65,7 +65,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('user.show', compact('user'));
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -77,7 +77,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
 
-        return view('user.edit', compact('user'));
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -91,19 +91,22 @@ class UserController extends Controller
     {
 
         $datosModificados = $request->validate(
+
             [
                 'name' => 'required|min:3',
-                'email' => 'required',
+                'email' => 'required|unique:users,email,'. $user->id,
                 'password' => 'required',
                 'rol'=> 'required'
             ]
             );
+           // dd($datosModificados);
             $user -> name = $datosModificados['name'];
             $user->email = $datosModificados['email'];
             $user-> password = $datosModificados['password'];
             $user->rol = $datosModificados['rol'];
+            $user->save();
 
-            return redirect()->route('user.index');
+            return redirect()->route('users.index');
     }
 
     /**
@@ -115,6 +118,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('user.index');
+        return redirect()->route('users.index');
     }
 }
