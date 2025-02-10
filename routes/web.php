@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\UserController;
 use App\Models\Producto;
@@ -20,8 +21,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $productos = Producto::all();
     return view('productos.index',compact('productos'));
-});
-Route::resource('users', UserController::class);
-Route::resource('productos', ProductoController::class);
+})->middleware('auth');
+Route::resource('users', UserController::class)->middleware('roles:admin');
+Route::resource('productos', ProductoController::class)->only('index', 'show')->middleware('auth');
+Route::get('login', [LoginController::class, 'loginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 

@@ -4,6 +4,8 @@
 @section('contenido')
 
 <h1>Listado de Usuarios</h1>
+
+
 <table>
     <tr>
         <th>nombre</th>
